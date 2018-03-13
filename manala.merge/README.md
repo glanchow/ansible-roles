@@ -41,36 +41,40 @@ None.
 | Name                  | Default | Type  | Description |
 | --------------------- | ------- | ----- | ----------- |
 | `manala_merge_hashes` | []      | Array | Hashes      |
-| `manala_merge_prefix` | ~       | String| Prefix      |
-| `manala_merge_var`    | ~       | String| Var         |
 
-### Example
+### Examples
+
+Merge hashes and store results elements as facts
 
 ```yaml
 - hosts: all
   vars:
+    foo: bar
+    hash_1: # First hash
+      foo: foo
+      bar: qux
+    hash_2: # Second hash
+      bar: bar
+      baz: baz
+    hash_3: # Third hash
+      qux: qux
     manala_merge_hashes:
-      - _all
-      - _env
-      - _group_({{ group_names|join('|') }})
-      - _host
-      - foo: bar
-        bar: foo
+      - hashes:
+          - hash_1 # First hash name
+          - hash_2 # Second hash name
+          - hash_3 # Third hash name
   roles:
     - manala.merge
+  tasks:
+    - debug:
+        var: foo # -> foo
+    - debug:
+        var: bar # -> bar
+    - debug:
+        var: baz # -> baz
+    - debug:
+        var: qux # -> qux
 ```
-
-### Hashes
-
-...
-
-### Prefix
-
-...
-
-### Var
-
-...
 
 # Licence
 

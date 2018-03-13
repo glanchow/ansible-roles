@@ -4,29 +4,22 @@
   hosts: all
   gather_facts: false
   vars:
-    foo: bar
     hash_1:
       foo: foo
       bar: qux
     hash_2:
       bar: bar
-    hash_3:
-      qux: qux
+      baz: baz
     manala_merge_hashes:
       - hashes:
           - hash_1
           - hash_2
-          - baz: baz
-      - hashes:
-          - hash_3
+        var: foo
   roles:
     - manala.merge
   post_tasks:
     # - debug:
-    #     var: hostvars
+    #    var: hostvars
     - assert:
         that:
-          - "{{ foo == 'foo' }}"
-          - "{{ bar == 'bar' }}"
-          - "{{ baz == 'baz' }}"
-          - "{{ qux == 'qux' }}"
+          - "{{ foo == {'foo': 'foo', 'bar': 'bar', 'baz': 'baz'} }}"
